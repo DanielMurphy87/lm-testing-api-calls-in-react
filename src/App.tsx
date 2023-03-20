@@ -1,33 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import { useFetchData } from "./hooks/use_fetch_data";
+import { outputFetchResult } from "./utils/output_fetch_result";
+import { StarWarsCharacter, Character } from "./components/character";
+import { API_BASE_URL } from "./config/config";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { data, error, isFetching, status } = useFetchData<Character>(
+    `${API_BASE_URL}/people/11/`
+  );
 
   return (
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h1>
+        {isFetching ? (
+          "Fetching..."
+        ) : (
+          <>
+            {outputFetchResult(status, error, data, (data) => (
+              <StarWarsCharacter name={data.name} />
+            ))}
+          </>
+        )}
+      </h1>
     </div>
   )
 }
