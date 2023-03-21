@@ -21,3 +21,7 @@ test('renders the first person returned by the API', async () => {
     const name = await screen.findByText(/Luke Skywalker/i);
     expect(name).toBeInTheDocument();
 });
+
+test("working", () => {
+    expect(true).toBe(true);
+})
